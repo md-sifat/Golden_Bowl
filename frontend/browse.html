@@ -1,11 +1,57 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Browse Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
-<body>
-    this page is not developed yet <br>
-    go back in homepage.....
+<body class="h-screen w-screen bg-cover bg-center relative" style="background-image: url('assets/img1.jpg');">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative flex h-full">
+        <div class="w-1/5 p-6 glass flex flex-col items-center space-y-6 shadow-lg">
+            <a href="index.html">
+                <div class="logo-container">
+                    <img src="assets/img1.jpg" alt="Banner" class="mr-5 w-16 h-4/5 object-cover rounded-lg">
+                      <h1>Golden Bowl</h1>
+                </div>
+            </a>
+            <header class="bg-transparent text-white py-4 px-6 flex justify-between items-center">
+                <h1 id="username" class="text-lg font-bold">Welcome To Golden Bowl</h1>
+            </header>
+            <h2 class="text-xl font-bold text-white">Food Categories</h2>
+            <button onclick="fetchItems('Tea')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Tea
+            </button>
+            <button onclick="fetchItems('Appetizers')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Appetizers
+            </button>
+            <button onclick="fetchItems('Main Course')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Main Course
+            </button>
+            <button onclick="fetchItems('Desserts')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Desserts
+            </button>
+            <button onclick="fetchItems('Beverages')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Beverages
+            </button>
+            <button onclick="fetchItems('Snacks')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Snacks
+            </button>
+        </div>
+
+        <div class="relative w-4/5 p-6 flex flex-col items-center">
+            <div id="itemsContainer" class="w-full grid grid-cols-4 gap-6">
+                <!-- js will dynamically add items in here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart compt-->
+
+
+
+   <script src="browse.js"></script>
 </body>
 </html>
