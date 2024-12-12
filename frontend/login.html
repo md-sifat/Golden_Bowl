@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="bg-cover bg-center" style="background-image: url('assets/img1.jpg');">
+
+    <!-- Logo and Title in Top Left -->
+    <a href="index.html">
+        <div class="logo-container">
+            <img src="assets/img1.jpg" alt="Banner" class="mr-5 w-16 h-4/5 object-cover rounded-lg">
+              <h1>Golden Bowl</h1>
+        </div>
+    </a>
+    
+
+    <div class="flex justify-center items-center h-screen bg-black bg-opacity-50">
+        <div class="max-w-md w-full p-10 glass text-white">
+            <div class="mt-4 text-center">
+                <p class="text-sm">Don't have an account? <a href="signup.html" class="text-blue-500  border-spacing-8 border-red-700 hover:text-blue-700">Sign up here</a></p>
+            </div>
+            <h2 class="text-3xl font-bold text-center mb-8">Login</h2>
+            
+            <!-- Role Selection -->
+            <div class="mb-6 text-center">
+                
+                <label for="role" class="block text-sm font-semibold mb-2">Select Role</label>
+                <div class="flex justify-center gap-4">
+                    <button id="customer" class="w-1/3 p-3 border border-white rounded-lg text-white hover:bg-green-500 hover:text-white focus:outline-none" onclick="setRole('customer')">Customer</button>
+                    <button id="manager" class="w-1/3 p-3 border border-white rounded-lg text-white hover:bg-green-500 hover:text-white focus:outline-none" onclick="setRole('manager')">Manager</button>
+                    <button id="chef" class="w-1/3 p-3 border border-white rounded-lg text-white hover:bg-green-500 hover:text-white focus:outline-none" onclick="setRole('chef')">Chef</button>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" action="/api/auth/login" method="POST" class="space-y-4">
+                <div class="mb-4">
+                    <input type="email" name="email" placeholder="Email" id="email" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required disabled />
+                </div>
+                <div class="mb-4">
+                    <input type="password" name="password" placeholder="Password" id="password" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required disabled />
+                </div>
+                <button type="submit" id="submitBtn" class="w-full p-4 text-white rounded-lg hover:bg-gray-800 focus:outline-none" disabled>Login</button>
+            </form>
+
+            
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+
+</body>
+</html>

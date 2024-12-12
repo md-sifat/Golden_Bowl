@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+<body class="bg-cover bg-center" style="background-image: url('assets/img1.jpg');">
+
+    <a href="index.html">
+        <div class="logo-container">
+            <img src="assets/img1.jpg" alt="Banner" class="mr-5 w-16 h-4/5 object-cover rounded-lg">
+              <h1>Golden Bowl</h1>
+        </div>
+    </a>
+
+    <div class="flex justify-center items-center h-screen bg-black bg-opacity-50">
+        <div class="max-w-sm w-full p-10 glass text-white">
+            <h2 class="text-3xl font-bold text-center mb-8">Sign Up</h2>
+
+            <div class="mb-6 text-center">
+                <label for="role" class="block text-sm font-semibold mb-2">Select Role</label>
+                <div class="flex justify-center gap-4">
+                    <button type="button" id="customer" class="role-btn" onclick="setRole('customer')">Customer</button>
+                    <button type="button" id="manager" class="role-btn" onclick="setRole('manager')">Manager</button>
+                    <button type="button" id="chef" class="role-btn" onclick="setRole('chef')">Chef</button>
+                </div>
+            </div>
+
+            <form id="signupForm" method="POST">
+                <div class="mb-4">
+                    <input type="text" name="firstname" id="firstname" placeholder="First Name" class="w-full p-3 border border-gray-300 rounded-lg" required />
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="lastname" id="lastname" placeholder="Last Name" class="w-full p-3 border border-gray-300 rounded-lg" required />
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="username" id="username" placeholder="Username" class="w-full p-3 border border-gray-300 rounded-lg" required />
+                </div>
+                <div class="mb-4">
+                    <input type="email" name="email" id="email" placeholder="Email" class="w-full p-3 border border-gray-300 rounded-lg" required />
+                </div>
+                <div class="mb-4">
+                    <input type="password" name="password" id="password" placeholder="Password" class="w-full p-3 border border-gray-300 rounded-lg" required />
+                </div>
+                <button type="submit" id="submitBtn" class="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800" disabled>Sign Up</button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <p class="text-sm">Already have an account? <a href="login.html" class="text-blue-500 hover:text-blue-700">Login here</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/signup.js"></script>
+</body>
+</html>

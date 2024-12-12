@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body class="h-screen w-screen bg-cover bg-center relative" style="background-image: url('assets/img1.jpg');">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative flex h-full">
+        <div class="w-1/5 p-6 glass flex flex-col items-center space-y-6 shadow-lg">
+            <header class="bg-transparent text-white py-4 px-6 flex justify-between items-center">
+                <h1 id="username" class="text-lg font-bold">Welcome, User</h1>
+            </header>
+            <button onclick="toggleAddItemForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Add New Item</button>
+            <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Logout</button>
+            <h2 class="text-xl font-bold text-white">Food Categories</h2>
+            <button onclick="fetchItems('Tea')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Tea
+            </button>
+            <button onclick="fetchItems('Appetizers')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Appetizers
+            </button>
+            <button onclick="fetchItems('Main Course')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Main Course
+            </button>
+            <button onclick="fetchItems('Desserts')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Desserts
+            </button>
+            <button onclick="fetchItems('Beverages')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Beverages
+            </button>
+            <button onclick="fetchItems('Snacks')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Snacks
+            </button>
+        </div>
+        <div class="relative w-4/5 p-6 flex flex-col items-center">
+            <div id="itemsContainer" class="w-full grid grid-cols-4 gap-6">
+                <!-- dynamically will add using js -->
+            </div>
+
+
+            <div id="addItemForm" class="hidden bg-transparent text-white mt-28 p-6 rounded-lg shadow-lg glass w-full max-w-lg mx-auto">
+                <h3 class="text-xl font-bold text-white text-center mb-4">Add New Item</h3>
+                <form id="newItemForm" onsubmit="addItem(event)">
+                    <div class="mb-4">
+                        <label for="itemName" class="block text-white text-sm font-medium ">Item Name</label>
+                        <input type="text" id="itemName" name="itemName" class="w-full glass p-2 rounded border" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="itemPrice" class="block text-sm font-medium text-white ">Price</label>
+                        <input type="number" id="itemPrice" name="itemPrice" class="w-full glass p-2 rounded border" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="itemType" class="block text-sm glass font-medium  text-white">Item Type</label>
+                        <select id="itemType" name="itemType" class="w-full glass p-2 rounded border" required>
+                            <option class="glass bg-gray-700 " value="Tea">Tea</option>
+                            <option class="glass bg-gray-700 " value="Appetizers">Appetizers</option>
+                            <option class="glass bg-gray-700" value="Main Course">Main Course</option>
+                            <option class="glass bg-gray-700" value="Desserts">Desserts</option>
+                            <option class="glass bg-gray-700" value="Beverages">Beverages</option>
+                            <option class="glass bg-gray-700" value="Snacks">Snacks</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="itemImage" class="block text-sm font-medium text-gray-700">Upload Image</label>
+                        <input type="file" id="itemImage" name="itemImage" accept="image/*" class="w-full glass p-2 rounded border">
+                    </div>
+                    <div class="flex justify-center">
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>

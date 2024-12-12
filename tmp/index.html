@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .selected {
+            background-color: grey;
+            color: white;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen bg-cover bg-center relative" style="background-image: url('assets/img1.jpg');">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
+
+    <!-- Dashboard Layout -->
+    <div class="relative flex h-full">
+        
+        <!-- Sidebar -->
+        <div class="w-1/5 p-6 glass flex flex-col items-center space-y-6 shadow-lg">
+            <header class="bg-transparent text-white py-4 px-6 flex  justify-between items-center">
+                <h1 id="username" class="text-lg font-bold">Welcome, User</h1>
+            </header>
+            <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Logout</button>
+            <h2 class="text-xl font-bold text-white">Food Categories</h2>
+            <button onclick="fetchItems('Food')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Appetizers
+            </button>
+            <button onclick="fetchItems('snacks')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Main Course
+            </button>
+            <button onclick="fetchItems('meals')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Desserts
+            </button>
+            <button class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Beverages
+            </button>
+            <button class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Snacks
+            </button>
+        </div>
+
+        <!-- Items Section -->
+        <div class="relative w-4/5 p-6 flex flex-col items-center">
+            <div id="itemsContainer" class="w-full grid grid-cols-4 gap-6">
+                <!-- JavaScript will dynamically populate items here -->
+            </div>
+
+            <!-- Pagination Buttons -->
+            <div id="paginationControls" class="mt-6 flex space-x-2">
+                <!-- JavaScript will dynamically generate pagination buttons -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+    <div id="cart" class="fixed top-0 right-0 h-full w-1/3 glass shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50 p-6">
+        <!-- Close Button -->
+        <button id="closeCart" class="absolute top-2 right-2 text-gray-700 hover:text-black text-2xl font-bold">
+            &times;
+        </button>
+        <h2 class="text-xl font-bold text-white mb-4">Cart</h2>
+        <ul id="cartItems" class="space-y-4"></ul>
+        <p id="cartTotal" class="text-white font-bold text-lg mt-4">Total: $0</p>
+        <div class="flex space-x-4 mt-4">
+            <button onclick="checkout()" id="checkoutButton" class="bg-red-500 text-white py-2 px-4 rounded-lg w-full hover:bg-red-700">
+                Checkout
+            </button>
+            <button id="clearAllButton" class="bg-gray-500 text-white py-2 px-4 rounded-lg w-full hover:bg-gray-700">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Button -->
+    <button id="cartToggle" class="fixed top-4 right-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 shadow-lg">
+        Cart (<span id="cartCount">0</span>)
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        const cart = document.getElementById('cart');
+        const cartToggle = document.getElementById('cartToggle');
+        const closeCart = document.getElementById('closeCart');
+        const cartCount = document.getElementById('cartCount');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const clearAllButton = document.getElementById('clearAllButton');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+
+        const itemsContainer = document.getElementById('itemsContainer');
+        const paginationControls = document.getElementById('paginationControls');
+
+        // serverside rendering ----
+        let cartItems = [];
+        let cartTotal = 0;
+
+        async function fetchUserInfo(){
+            const response = await fetch('/api/auth/user', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+            });
+            if (response.ok) {
+                const user = await response.json();
+                document.getElementById('username').textContent = `Welcome, ${user.firstname} ${user.lastname}`;
+                localStorage.setItem('username', user.username);
+            } else {
+                alert('Failed to fetch user info. Redirecting to login.');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Fetch menu items based on item type
+        async function fetchItems(itemType) {
+            const response = await fetch(`/api/menu/${itemType}`);
+            if (response.ok) {
+                const items = await response.json();
+                renderItems(items);
+            } else {
+                alert('Failed to fetch menu items.');
+            }
+        }
+
+
+        function renderItems(items) {
+            console.log(items)
+            const menuItemsContainer = document.getElementById('menu-items');
+            menuItemsContainer.innerHTML = ''; // Clear previous items
+            items.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = 'bg-white shadow-lg p-4 rounded';
+                itemCard.innerHTML = `
+                    <h3 class="text-lg font-bold">${item.name}</h3>
+                    <p class="text-gray-600">Price: $${item.price}</p>
+                    <button onclick="addToCart(${item.menu_item_id}, '${item.name}', ${item.price})" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Add to Cart</button>
+                `;
+                menuItemsContainer.appendChild(itemCard);
+            });
+
+            const button = card.querySelector('.add-to-cart');
+            button.addEventListener('click', () => toggleCart(item, button));
+            itemsContainer.appendChild(card);
+        }
+
+        // Add item to the cart
+        function addToCart(id, name, price) {
+            cartItems.push({ id, name, price });
+            cartTotal += price;
+            updateCart();
+        }
+
+        // Update cart display
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            cartItems.forEach(item => {
+                const cartItem = document.createElement('li');
+                cartItem.textContent = `${item.name} - $${item.price}`;
+                cartItemsContainer.appendChild(cartItem);
+            });
+            document.getElementById('cart-total').textContent = `Total: $${cartTotal.toFixed(2)}`;
+        }
+
+        // Handle checkout
+        async function checkout() {
+            const username = localStorage.getItem('username');
+            console.log(username);
+
+            if (!username) {
+                alert('User not logged in!');
+                return;
+            }
+            console.log('Preparing to send request...');
+        try {
+        const response = await fetch('/api/order/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username,
+                menu_item_ids: cartItems.map(item => item.id),
+                total_price: cartTotal,
+                status: 'pending',
+            }),
+        });
+
+        console.log('Raw response:', response);
+
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log('Response JSON:', responseData);
+            alert('Order placed successfully!');
+            cartItems = [];
+            cartTotal = 0;
+            updateCart();
+        } else {
+            const errorData = await response.json();
+            console.error('Error response:', errorData);
+            alert(`Failed to place order: ${errorData.message || 'Unknown error'}`);
+        }
+        } catch (error) {
+            console.error('Error during fetch:', error);
+            alert('Failed to place order: Network or server error.');
+        }
+        }
+
+        // Handle logout
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Initial page setup
+        fetchUserInfo();
+
+        // --------------
+
+       
+
+        // Handle sidebar selection
+        categoryButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach((btn) => btn.classList.add('bg-black'));
+                button.classList.remove('bg-black');
+                button.classList.add('selected');
+            });
+        });
+
+        // Render items for the current page
+        // function renderItems(page) {
+        //     itemsContainer.innerHTML = '';
+        //     const start = (page - 1) * itemsPerPage;
+        //     const end = start + itemsPerPage;
+
+        //     items.slice(start, end).forEach((item) => {
+        //         const card = document.createElement('div');
+        //         card.className = 'w-full h-auto p-4 glass shadow-lg';
+        //         card.innerHTML = `
+        //             <img src="${item.image}" alt="${item.name}" class="w-full h-32 object-cover rounded-t-lg mb-4">
+        //             <h3 class="text-lg font-bold text-white">${item.name}</h3>
+        //             <p class="text-sm text-white">Price: $${item.price}</p>
+        //             <button class="add-to-cart mt-4 bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+        //                 Add to Cart
+        //             </button>
+        //         `;
+        //         const button = card.querySelector('.add-to-cart');
+        //         button.addEventListener('click', () => toggleCart(item, button));
+        //         itemsContainer.appendChild(card);
+        //     });
+        // }
+
+        function toggleCart(item, button) {
+            if (cartData.has(item.id)) {
+                cartData.delete(item.id);
+                button.classList.remove('bg-gray-500');
+                button.classList.add('bg-black');
+                button.textContent = 'Add to Cart';
+            } else {
+                cartData.set(item.id, item);
+                button.classList.remove('bg-black');
+                button.classList.add('bg-gray-500');
+                button.textContent = 'Remove from Cart';
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cartData.forEach((item) => {
+                total += item.price;
+                const li = document.createElement('li');
+                li.className = 'text-white';
+                li.textContent = `${item.name} - $${item.price}`;
+                cartItems.appendChild(li);
+            });
+            cartTotal.textContent = `Total: $${total}`;
+            cartCount.textContent = cartData.size;
+        }
+
+        // Clear all items from the cart
+        clearAllButton.addEventListener('click', () => {
+            cartData.clear();
+            updateCart();
+            document.querySelectorAll('.add-to-cart').forEach((button) => {
+                button.classList.remove('bg-gray-500');
+                button.classList.add('bg-black');
+                button.textContent = 'Add to Cart';
+            });
+        });
+
+        // Pagination
+        
+
+       
+    </script>
+</body>
+</html>

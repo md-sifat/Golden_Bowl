@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-screen w-screen bg-cover bg-center relative" style="background-image: url('assets/img1.jpg');">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative flex h-full">
+        <div class="w-1/5 p-6 glass flex flex-col items-center space-y-6 shadow-lg">
+            <header class="bg-transparent text-white py-4 px-6 flex justify-between items-center">
+                <h1 id="username" class="text-lg font-bold">Welcome, User</h1>
+            </header>
+            <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Logout</button>
+            <h2 class="text-xl font-bold text-white">Food Categories</h2>
+            <button onclick="fetchItems('Tea')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Tea
+            </button>
+            <button onclick="fetchItems('Appetizers')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Appetizers
+            </button>
+            <button onclick="fetchItems('Main Course')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Main Course
+            </button>
+            <button onclick="fetchItems('Desserts')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Desserts
+            </button>
+            <button onclick="fetchItems('Beverages')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Beverages
+            </button>
+            <button onclick="fetchItems('Snacks')" class="category-btn bg-black text-white py-2 px-4 rounded-lg w-full hover:bg-gray-800">
+                Snacks
+            </button>
+        </div>
+
+        <div class="relative w-4/5 p-6 flex flex-col items-center">
+            <div id="itemsContainer" class="w-full grid grid-cols-4 gap-6">
+                <!-- js will dynamically add items in here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart compt-->
+    <div id="cart" class="fixed top-0 right-0 h-full w-1/3 glass shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50 p-6">
+        <button id="closeCart" class="absolute top-2 right-2 text-white hover:text-black text-2xl font-bold">
+            &times;
+        </button>
+        <h2 class="text-xl font-bold text-white mb-4">Cart</h2>
+        <ul id="cartItems" class="space-y-4 text-white"></ul>
+        <p id="cartTotal" class="text-white font-bold text-lg mt-4">Total: 0 BDT</p>
+        <div class="flex space-x-4 mt-4">
+            <button onclick="checkout()" id="checkoutButton" class="bg-red-500 text-white py-2 px-4 rounded-lg w-full hover:bg-red-700">
+                Checkout
+            </button>
+            <button id="clearAllButton" class="bg-gray-500 text-white py-2 px-4 rounded-lg w-full hover:bg-gray-700">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <button id="cartToggle" class="fixed top-4 right-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 shadow-lg">
+        Cart (<span id="cartCount">0</span>)
+    </button>
+
+   <script src="script.js"></script>
+</body>
+</html>

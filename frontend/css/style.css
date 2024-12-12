@@ -1,0 +1,40 @@
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .bg-opacity-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+  }
+  .fixed-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  }
+  .content-padding {
+    padding-top: 6rem;
+  }
+  .slider-container {
+    overflow: hidden;
+  }
+  .slider-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .card {
+    flex: 0 0 calc(33.333% - 1rem); 
+    margin: 0.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .card img {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
